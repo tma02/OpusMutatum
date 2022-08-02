@@ -13,8 +13,9 @@ namespace OpusMutatum {
 	public class OpusMutatum {
 
 		// For intermediary or devExe
-		static string PathToLightning = "./Last Call BBS.exe";
-		static string PathToModdedLightning = "./Last Call BBS.modded.exe";
+		static string PathToBinary = "./Last Call BBS.exe";
+		static string PathToModdedBinary = "./Last Call BBS.modded.exe";
+		static string PathToBackupBinary = "./Last Call BBS.original.exe";
 
 		// for merge
 		static string PathToMonoMod = "./MonoMod.exe";
@@ -116,7 +117,7 @@ namespace OpusMutatum {
 						current = ArgumentParsingMode.Argument;
 						break;
 					case ArgumentParsingMode.LightningPath:
-						PathToLightning = arg;
+						PathToBinary = arg;
 						current = ArgumentParsingMode.Argument;
 						break;
 					case ArgumentParsingMode.MonoModPath:
@@ -147,7 +148,8 @@ namespace OpusMutatum {
 			}
 
 			try {
-				switch(action) {
+				HandleBinaryBackup();
+				switch (action) {
 					case RunAction.Strings:
 						HandleStrings();
 						break;
@@ -178,6 +180,15 @@ namespace OpusMutatum {
 			// keep command line open
 			Console.ReadKey();
 		}
+
+		static void HandleBinaryBackup()
+        {
+			// TODO: handle official game updates
+			if (!File.Exists(PathToBackupBinary))
+            {
+				File.Copy(PathToBinary, PathToBackupBinary);
+            }
+        }
 
 		static void HandleRun() {
 			// just run MONOMODDED_IntermediaryLightning.exe
@@ -291,20 +302,20 @@ namespace OpusMutatum {
 					} else
 						Console.WriteLine($"Missing string for {stringFunc.Item2}");
 
-			LightningAssembly.Write("IntermediaryMilwaukee.exe");
+			LightningAssembly.Write("Last Call BBS.intermediary.exe");
 			Console.WriteLine();
 		}
 
 		static void LoadLightning() {
 			Console.WriteLine("Reading Last Call BBS.exe...");
-			LightningAssembly = AssemblyDefinition.ReadAssembly(PathToLightning);
+			LightningAssembly = AssemblyDefinition.ReadAssembly(PathToBinary);
 			Console.WriteLine(LightningAssembly == null ? "Failed to load Last Call BBS.exe" : "Found Last Call BBS executable: " + LightningAssembly.FullName);
 		}
 
 		static void LoadModdedLightning() {
 			Console.WriteLine("Reading modded Last Call BBS.exe...");
-			ModdedLightningAssembly = AssemblyDefinition.ReadAssembly(PathToModdedLightning);
-			Console.WriteLine(ModdedLightningAssembly == null ? $"Failed to load modded Last Call BBS.exe at \"{PathToModdedLightning}\"" : "Found modded Last Call BBS executable: " + ModdedLightningAssembly.FullName);
+			ModdedLightningAssembly = AssemblyDefinition.ReadAssembly(PathToModdedBinary);
+			Console.WriteLine(ModdedLightningAssembly == null ? $"Failed to load modded Last Call BBS.exe at \"{PathToModdedBinary}\"" : "Found modded Last Call BBS executable: " + ModdedLightningAssembly.FullName);
 		}
 
 		static void LoadStrings() {
