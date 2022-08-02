@@ -13,16 +13,16 @@ namespace OpusMutatum {
 	public class OpusMutatum {
 
 		// For intermediary or devExe
-		static string PathToLightning = "./Lightning.exe";
-		static string PathToModdedLightning = "./ModdedLightning.exe";
+		static string PathToLightning = "./Last Call BBS.exe";
+		static string PathToModdedLightning = "./Last Call BBS.modded.exe";
 
 		// for merge
 		static string PathToMonoMod = "./MonoMod.exe";
 
 		// for strings
-		static string MainMethodName = "#=qbZYLMl8F9alVNlRAO03dOw==.#=qAqM7sFzcD4RfaoNvmBH0bw==";
-		static string StringDeobfName = "#=q7nvcBd_hWOx6ogq743lZkyDITddtOR9ugDU9NV1hD8Y=.#=qb3HWBkVlFVubfVOAwuy8rw==";
-		static string StringDeobfIntermediaryName = "method_131";
+		static string MainMethodName = "";
+		static string StringDeobfName = "#=qAvgTBxwQSbU8nMKfae8ZTNooHMt6RzxpjnyaOJttHWo=.#=qI5wF45wg$Wevb4QR$HM5tA==";
+		static string StringDeobfIntermediaryName = "method_517";
 
 		static List<string> MappingPaths = new List<string>();
 		static List<string> IntermediaryPaths = new List<string>();
@@ -213,7 +213,7 @@ namespace OpusMutatum {
 			Console.WriteLine($"Found {keys.Count()} string keys");
 
 			var msplit = MainMethodName.Split('.');
-			var mainMethod = module.FindMethod(msplit[0], msplit[1]);
+			var mainMethod = msplit.Length == 2 ? module.FindMethod(msplit[0], msplit[1]) : module.Assembly.EntryPoint;
 			var proc = mainMethod.Body.GetILProcessor();
 			var first = proc.Body.Instructions.First();
 
@@ -248,7 +248,7 @@ namespace OpusMutatum {
 			proc.InsertBefore(first, proc.Create(OpCodes.Ret));
 
 			Directory.CreateDirectory("./StringDumping");
-			module.Write("./StringDumping/Lightning.exe");
+			module.Write("./StringDumping/Last Call BBS.exe");
 
 			// Yells at you if System and Steamworks aren't in the StringDumping directory
 			if(OpSystem != OS.Windows && !File.Exists("./StringDumping/System.dll") && !File.Exists("./StringDumping/Steamworks.NET.dll")) {
@@ -257,7 +257,7 @@ namespace OpusMutatum {
 			}
 			Console.WriteLine("Running string dumper...");
 			// run the string dumper automatically
-			RunAndWait(Path.Combine(Directory.GetCurrentDirectory(), "StringDumping", "Lightning.exe"), "");
+			RunAndWait(Path.Combine(Directory.GetCurrentDirectory(), "StringDumping", "Last Call BBS.exe"), "");
 			Console.WriteLine();
 		}
 
@@ -291,20 +291,20 @@ namespace OpusMutatum {
 					} else
 						Console.WriteLine($"Missing string for {stringFunc.Item2}");
 
-			LightningAssembly.Write("IntermediaryLightning.exe");
+			LightningAssembly.Write("IntermediaryMilwaukee.exe");
 			Console.WriteLine();
 		}
 
 		static void LoadLightning() {
-			Console.WriteLine("Reading Lightning.exe...");
+			Console.WriteLine("Reading Last Call BBS.exe...");
 			LightningAssembly = AssemblyDefinition.ReadAssembly(PathToLightning);
-			Console.WriteLine(LightningAssembly == null ? "Failed to load Lightning.exe" : "Found Lightning executable: " + LightningAssembly.FullName);
+			Console.WriteLine(LightningAssembly == null ? "Failed to load Last Call BBS.exe" : "Found Last Call BBS executable: " + LightningAssembly.FullName);
 		}
 
 		static void LoadModdedLightning() {
-			Console.WriteLine("Reading modded Lightning.exe...");
+			Console.WriteLine("Reading modded Last Call BBS.exe...");
 			ModdedLightningAssembly = AssemblyDefinition.ReadAssembly(PathToModdedLightning);
-			Console.WriteLine(ModdedLightningAssembly == null ? $"Failed to load modded Lightning.exe at \"{PathToModdedLightning}\"" : "Found modded Lightning executable: " + ModdedLightningAssembly.FullName);
+			Console.WriteLine(ModdedLightningAssembly == null ? $"Failed to load modded Last Call BBS.exe at \"{PathToModdedLightning}\"" : "Found modded Last Call BBS executable: " + ModdedLightningAssembly.FullName);
 		}
 
 		static void LoadStrings() {
@@ -491,7 +491,7 @@ namespace OpusMutatum {
 			LoadModdedLightning();
 			LoadMappings();
 			DoRemap(GetNamedForIntermediary, Mappings.ContainsKey, CollectNestedTypes(ModdedLightningAssembly.MainModule.Types), (mref, instr) => { }, typeDef => { });
-			ModdedLightningAssembly.Write("DevLightning.exe");
+			ModdedLightningAssembly.Write("Last Call BBS.dev.exe");
 			Console.WriteLine();
 		}
 
