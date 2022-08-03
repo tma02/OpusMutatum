@@ -22,8 +22,8 @@ namespace OpusMutatum {
 
 		// for strings
 		static string MainMethodName = "";
-		static string StringDeobfName = "#=qAvgTBxwQSbU8nMKfae8ZTNooHMt6RzxpjnyaOJttHWo=.#=qI5wF45wg$Wevb4QR$HM5tA==";
-		static string StringDeobfIntermediaryName = "method_517";
+		static string StringDeobfName = "#=q7bI861GNNnuksgbFPdaRiIAE29AXR8DLoCo819OFLS8=.#=qXj8ykLXoplzK9TVa9S6OiA==";
+		static string StringDeobfIntermediaryName = "method_330";
 
 		static List<string> MappingPaths = new List<string>();
 		static List<string> IntermediaryPaths = new List<string>();
@@ -465,6 +465,7 @@ namespace OpusMutatum {
 		}
 
 		static void HandleMerge() {
+			// TODO: merge with new mod loader?
 			// run "./MonoMod.exe IntermediaryLightning.exe Quintessential.dll ModdedLightning.exe"
 			// then "./MonoMod.RuntimeDetour.HookGen.exe ModdedLightning.exe"
 			if(File.Exists("./MonoMod.exe")) {
