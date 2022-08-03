@@ -302,7 +302,7 @@ namespace OpusMutatum {
 					} else
 						Console.WriteLine($"Missing string for {stringFunc.Item2}");
 
-			LightningAssembly.Write("Last Call BBS.intermediary.exe");
+			LightningAssembly.Write("Milwaukee.exe");
 			Console.WriteLine();
 		}
 
